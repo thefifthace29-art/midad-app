@@ -1,5 +1,5 @@
 name: midad_app
-description: "تطبيق مِداد التعليمي - الصف الثالث الابتدائي في سوريا"
+description: "تطبيق مِداد التعليمي - الصف الثالث الابتدائي"
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,15 +9,21 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  intl: ^0.19.0
   cupertino_icons: ^1.0.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"
 
 flutter:
   uses-material-design: true
-  
-  # لاحقاً سنضيف الخطوط هنا، وسنتركها الآن بشكل افتراضي ليعمل التطبيق بسلاسة
-  
+  assets:
+    - assets/icon.png
