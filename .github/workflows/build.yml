@@ -25,17 +25,18 @@ jobs:
       with:
         channel: 'stable'
 
-    # 1. توليد مجلد ملفات أندرويد
     - name: Create Android Platform Files
       run: flutter create . --org com.midad.app --project-name midad_app --platforms=android
 
-    # 2. تغيير اسم التطبيق الظاهر أسفل الأيقونة إلى "مِداد"
     - name: Set App Label to Midad
       run: |
         sed -i 's/android:label="midad_app"/android:label="مِداد"/g' android/app/src/main/AndroidManifest.xml || true
 
     - name: Install dependencies
       run: flutter pub get
+
+    - name: Generate App Icons
+      run: flutter pub run flutter_launcher_icons
 
     - name: Build APK
       run: flutter build apk --release
