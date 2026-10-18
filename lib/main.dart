@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// استيراد الشاشات التي قمنا بإنشائها
+import 'package:intl/intl.dart';
 import 'screens/books_screen.dart';
 import 'screens/preparation_screen.dart';
 import 'screens/activities_screen.dart';
@@ -36,8 +36,83 @@ class MidadApp extends StatelessWidget {
 class RoleSelectionScreen extends StatelessWidget {
   const RoleSelectionScreen({super.key});
 
+  // قائمة 60+ حكمة ومثل تربوي تتغير يومياً
+  static final List<String> dailyWisdoms = [
+    "العلْمُ نورٌ والجَهْلُ ظَلامٌ.",
+    "منْ فَتَحَ بَابَ مَدْرَسَةٍ، أَقْلَقَ بَابَ سِجْنٍ.",
+    "العِلْمُ فِي الصِّغَرِ كَالنَّقْشِ عَلَى الحَجَرِ.",
+    "مَنْ عَلَّمَنِي حَرْفاً، كُنْتُ لَهُ عَبْداً.",
+    "أَوَّلُ العِلْمِ الصَّمْتُ، وَالثَّانِي الاِسْتِمَاعُ، وَالثَّالِثُ الحِفْظُ، وَالرَّابِعُ العَمَلُ بِهِ.",
+    "رَأْسُ الحِكْمَةِ مَخَافَةُ اللهِ.",
+    "الاجْتِهَادُ مِفْتَاحُ النَّجَاحِ.",
+    "لا تُؤَجِّلْ عَمَلَ اليَوْمِ إِلَى الغَدِ.",
+    "بِالعِلْمِ تَرْقَى الأُمَمُ وَتَزْدَهِرُ.",
+    "الوَقْتُ كَالْسَّيْفِ إِنْ لَمْ تَقْطَعْهُ قَطَعَكَ.",
+    "مَنْ سَارَ عَلَى الدَّرْبِ وَصَلَ.",
+    "القِرَاءَةُ غِذَاءُ العَقْلِ وَالرُّوحِ.",
+    "المُعَلِّمُ شَمْعَةٌ تُضِيءُ طَرِيقَ الآخَرِينَ.",
+    "مَنْ يَزْرَعْ يَحْصُدْ، وَمَنْ يَجْتَهِدْ يَنْجَحْ.",
+    "الأَدَبُ قَبْلَ العِلْمِ.",
+    "الصَّبْرُ مِفْتَاحُ الفَرَجِ.",
+    "العَقْلُ السَّلِيمُ فِي الجِسْمِ السَّلِيمِ.",
+    "خَيْرُ جَلِيسٍ فِي الزَّمَانِ كِتَابُ.",
+    "العِلْمُ بِلا عَمَلٍ كَالشَّجَرِ بِلا ثَمَرٍ.",
+    "بِالأَخْلاَقِ الفَاضِلَةِ تَبْنِي القُلُوبَ.",
+    "التَّعْلِيمُ هُوَ السِّلاَحُ الأَقْوَى لِتَغْيِيرِ العَالَمِ.",
+    "لَيْسَ المَرْءُ يُولَدُ عَالِماً.",
+    "اطْلُبُوا العِلْمَ مِنَ المَهْدِ إِلَى اللَّحْدِ.",
+    "النَّجَاحُ يُوَلِّدُ النَّجَاحَ.",
+    "الكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ.",
+    "مَنْ تَعَلَّمَ لُغَةَ قَوْمٍ أَمِنَ مَكْرَهُمْ.",
+    "العِلْمُ مَالٌ لاَ يُسْرَقُ وَكَنْزٌ لاَ يَنْفَدُ.",
+    "الخُلُقُ الحَسَنُ جَمَالُ الرُّوحِ.",
+    "تَعَلَّمُوا العِلْمَ وَتَعَلَّمُوا لَهُ السَّكِينَةَ وَالوَقَارَ.",
+    "النَّظَافَةُ مِنَ الإِيمَانِ.",
+    "الصِّدْقُ يَهْدِي إِلَى البِرِّ.",
+    "التَّواضُعُ مِنْ شِيَمِ العُلَمَاءِ.",
+    "بِالإِرَادَةِ نَصْنَعُ المُعْجِزَاتِ.",
+    "الأَمَانَةُ خُلُقُ المُنْتَصِرِينَ.",
+    "العِلْمُ يَرْفَعُ بَيْتاً لاَ عِمَادَ لَهُ.",
+    "الجَهْلُ يَهْدِمُ بَيْتَ العِزِّ وَالَكَرَمِ.",
+    "مَنْ كَتَمَ عِلْماً أَلْجَمَهُ اللهُ بِلِجَامٍ مِنْ نَارٍ.",
+    "العِلْمُ صَيْدٌ وَالكِتَابَةُ قَيْدُهُ.",
+    "كُنْ عَالِماً أَوْ مُتَعَلِّماً أَوْ مُسْتَمِعاً.",
+    "الاحْتِرَامُ أَسَاسُ التَّعَامُلِ.",
+    "العَطَاءُ دُونَ مُقَابِلٍ قِمَّةُ السَّعَادَةِ.",
+    "الصَّدَاقَةُ كَنْزٌ لاَ يَفْنَى.",
+    "بالتَّعَاوُنِ نَحْقِيقُ الأَهْدَافَ.",
+    "مَنْ يَبْحَثْ عَنِ العِلْمِ يَجِدِ الحِكْمَةَ.",
+    "القِرَاءَةُ تَفْتَحُ آَفَاقَ المَعْرِفَةِ.",
+    "تَسْلِيحُ الأَطْفَالِ بِالعِلْمِ بِنَاءٌ لِلْمُسْتَقْبَلِ.",
+    "العَقْلُ زِينَةُ الإِنْسَانِ.",
+    "أَعْظَمُ الكَنُوزِ هُوَ عِلْمٌ نَافِعٌ.",
+    "لاَ شَيْءَ يُعَادِلُ لَذَّةَ الاكْتِشَافِ.",
+    "كُنْ طَمُوحاً وَلاَ تَرْضَ بِالأَقَلِّ.",
+    "المَعْرِفَةُ القُوَّةُ الحَقِيقِيَّةُ.",
+    "المُعَلِّمُ أَبٌ ثَانٍ وَقُدْوَةٌ حَسَنَةٌ.",
+    "الثِّقَةُ بِالنَّفْسِ أَّوَّلُ خُطُوَاتِ النَّجَاحِ.",
+    "الإِخْلاَصُ فِي العَمَلِ سِرُّ التَّفَوُّقِ.",
+    "كُنْ كَالشَّجَرِ يَرْمِيهِ النَّاسُ بِالحَجَرِ وَيَرْمِيهِمْ بِالثَّمَرِ.",
+    "العِلْمُ نُورٌ يَهْدِي إِلى الخَيْرِ.",
+    "قِيمَةُ المَرْءِ مَا يُحْسِنُهُ.",
+    "طَالِبُ العِلْمِ مَحْفُوفٌ بِالرَّحْمَةِ.",
+    "مَنْ شَاوَرَ الرِّجَالَ شَارَكَهَا فِي عُقُولِهَا.",
+    "التَّفَكُّرُ سَاعَةً خَيْرٌ مِنْ عِبَادَةِ سَنَةٍ.",
+    "كُنْ حَرِيصاً عَلَى وَقْتِكَ كَحِرْصِكَ عَلَى مَالِكَ."
+  ];
+
+  // الحصول على حكمة اليوم بناءً على رقم اليوم في السنة
+  String getTodayWisdom() {
+    int dayOfYear = int.parse(DateFormat('D').format(DateTime.now()));
+    return dailyWisdoms[dayOfYear % dailyWisdoms.length];
+  }
+
   @override
   Widget build(BuildContext context) {
+    final DateTime now = DateTime.now();
+    final String formattedDate = DateFormat('EEEE، d MMMM y', 'ar').format(now);
+    final String formattedTime = DateFormat('hh:mm a', 'ar').format(now);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('تطبيق مِداد - الصف الثالث الابتدائي'),
@@ -53,31 +128,155 @@ class RoleSelectionScreen extends StatelessWidget {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'مِداد',
-                style: TextStyle(
-                  fontSize: 42,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF0A5C36),
-                  letterSpacing: 2.0,
+              // 1. بطاقة الآية الكريمة والوقت/التاريخ
+              Card(
+                elevation: 3,
+                color: const Color(0xFF0A5C36),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      const Text(
+                        '﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFC5A059), // ذهبي
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const Divider(color: Colors.white24, height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.calendar_today, color: Colors.white70, size: 18),
+                              const SizedBox(width: 6),
+                              Text(
+                                formattedDate,
+                                style: const TextStyle(color: Colors.white, fontSize: 13),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Icon(Icons.access_time, color: Colors.white70, size: 18),
+                              const SizedBox(width: 6),
+                              Text(
+                                formattedTime,
+                                style: const TextStyle(color: Colors.white, fontSize: 13),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 8),
-              const Text(
-                'إعداد وتصميم المعلم:\nأحمد محمود الحسن الحاج ديبو',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFF4A5568),
-                  height: 1.4,
+              const SizedBox(height: 16),
+
+              // 2. بطاقة معلومات المعلم والمدرسة
+              Card(
+                elevation: 2,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  side: const BorderSide(color: Color(0xFFE2E8F0)),
                 ),
-                textAlign: TextAlign.center,
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 28,
+                        backgroundColor: Color(0xFF0A5C36),
+                        child: Icon(Icons.person, color: Colors.white, size: 32),
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'المُعلم: أحمد محمود الحسن الحاج ديبو',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF0A5C36),
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'مدرسة البطوشية',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF718096),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              const SizedBox(height: 48),
+              const SizedBox(height: 16),
+
+              // 3. بطاقة حكمة اليوم
+              Card(
+                elevation: 2,
+                color: const Color(0xFFFFFBEB), // خلفية دافئة ومريحة
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  side: const BorderSide(color: Color(0xFFFCD34D)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.auto_awesome, color: Color(0xFFD97706), size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                            'حِكْمَةُ اليَوْمِ',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFD97706),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        getTodayWisdom(),
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF78350F),
+                          height: 1.4,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 28),
+
+              // 4. زر الدخول لأقسام التطبيق
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0A5C36),
@@ -86,6 +285,7 @@ class RoleSelectionScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
+                  elevation: 3,
                 ),
                 onPressed: () {
                   Navigator.push(
@@ -95,9 +295,9 @@ class RoleSelectionScreen extends StatelessWidget {
                     ),
                   );
                 },
-                icon: const Icon(Icons.school, size: 26),
+                icon: const Icon(Icons.grid_view_rounded, size: 26),
                 label: const Text(
-                  'دخول لوحة التطبيق',
+                  'الدخول لأقسام التطبيق',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
