@@ -25,6 +25,10 @@ jobs:
       with:
         channel: 'stable'
 
+    # توليد ملفات ومجلد الأندرويد المفقودة تلقائياً
+    - name: Create Android Platform Files
+      run: flutter create . --platforms=android
+
     - name: Install dependencies
       run: flutter pub get
 
